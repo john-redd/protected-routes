@@ -3,16 +3,34 @@ import { useSelector, useDispatch } from 'react-redux'
 import useForm from 'hooks/useForm'
 import useAxios from 'hooks/useAxios'
 import { updateUser, logoutUser } from 'redux/reducers/user'
+import validateEmail from 'utils/validateEmail'
 import './login.css'
 
 import Loading from 'utils/Loading'
 
-const Login = () => {
-  const [formState, setFormState] = useForm({ email: '', password: '' })
+const Login = props => {
+  // const { updateUser, logoutUser } = this.props
+  const [formState, setFormState, resetForm] = useForm({ email: '', password: '' })
   const isAuthenticated = useSelector(
     (reduxState) => reduxState.userReducer.isAuthenticated
   )
   const dispatch = useDispatch()
+
+  const validateForm = (formValues) => {
+    let validForm = false
+    if (!validateEmail(formValues.email)) {
+      setFormState('error')('Please input a valid email.')
+      return validForm
+    }
+
+    if (!formValues.password) {
+      setFormState('error')('Please input a password.')
+      return validForm
+    }
+
+    validForm = true
+    return validForm
+  }
 
   const [
     { data: newUser, error: registerError, isLoading: isRegistering },
@@ -22,10 +40,10 @@ const Login = () => {
   const register = (e) => {
     e.preventDefault()
 
-    if (formState.email === '' || formState.password === '') {
-      return setFormState('error')('Please complete the form!')
+    if(validateForm(formState)){
+      registerUser({ data: formState })
+      resetForm()
     }
-    registerUser({ data: formState })
   }
 
   const [
@@ -36,10 +54,10 @@ const Login = () => {
   const login = (e) => {
     e.preventDefault()
 
-    if (formState.email === '' || formState.password === '') {
-      return setFormState('error')('Please complete the form!')
+    if (validateForm(formState)) {
+      loginUser({ data: formState })
+      resetForm()
     }
-    loginUser({ data: formState })
   }
 
   const [{ isLoading: isLoggingOut }, logoutRequest] = useAxios(
@@ -122,4 +140,10 @@ const Login = () => {
   )
 }
 
+// const mapDispatchToProps = {
+//   updateUser,
+//   logoutUser
+// }
+
+// export default connect()(Login)
 export default Login
