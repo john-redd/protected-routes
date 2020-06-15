@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch, connect } from 'react-redux'
 import useForm from 'hooks/useForm'
 import useAxios from 'hooks/useAxios'
 import { updateUser, logoutUser } from 'redux/reducers/user'
@@ -84,7 +84,6 @@ const Login = props => {
 
   return (
     <div className="login-main-container">
-      <div>Login</div>
       <form noValidate className="login-form-container">
         <div className="login-form-item">
           <label className="login-form-label">Email:</label>
@@ -145,5 +144,5 @@ const Login = props => {
 //   logoutUser
 // }
 
-// export default connect()(Login)
+// export default connect(null, mapDispatchToProps)(Login)
 export default Login
