@@ -8,7 +8,8 @@ const Loading = () => {
         // background: 'rgb(241, 242, 243)',
         display: 'block',
         shapeRendering: 'auto',
-        height: '100%'
+        // height: '100%',
+        width: '100%'
       }}
       // width=""
       // height="100%"

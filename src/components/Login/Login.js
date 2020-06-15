@@ -3,16 +3,34 @@ import { useSelector, useDispatch } from 'react-redux'
 import useForm from 'hooks/useForm'
 import useAxios from 'hooks/useAxios'
 import { updateUser, logoutUser } from 'redux/reducers/user'
+import validateEmail from 'utils/validateEmail'
 import './login.css'
 
 import Loading from 'utils/Loading'
 
-const Login = () => {
-  const [formState, setFormState] = useForm({ email: '', password: '' })
+const Login = props => {
+  // const { updateUser, logoutUser } = this.props
+  const [formState, setFormState, resetForm] = useForm({ email: '', password: '' })
   const isAuthenticated = useSelector(
     (reduxState) => reduxState.userReducer.isAuthenticated
   )
   const dispatch = useDispatch()
+
+  const validateForm = (formValues) => {
+    let validForm = false
+    if (!validateEmail(formValues.email)) {
+      setFormState('error')('Please input a valid email.')
+      return validForm
+    }
+
+    if (!formValues.password) {
+      setFormState('error')('Please input a password.')
+      return validForm
+    }
+
+    validForm = true
+    return validForm
+  }
 
   const [
     { data: newUser, error: registerError, isLoading: isRegistering },
@@ -22,10 +40,10 @@ const Login = () => {
   const register = (e) => {
     e.preventDefault()
 
-    if (formState.email === '' || formState.password === '') {
-      return setFormState('error')('Please complete the form!')
+    if(validateForm(formState)){
+      registerUser({ data: formState })
+      resetForm()
     }
-    registerUser({ data: formState })
   }
 
   const [
@@ -36,10 +54,10 @@ const Login = () => {
   const login = (e) => {
     e.preventDefault()
 
-    if (formState.email === '' || formState.password === '') {
-      return setFormState('error')('Please complete the form!')
+    if (validateForm(formState)) {
+      loginUser({ data: formState })
+      resetForm()
     }
-    loginUser({ data: formState })
   }
 
   const [{ isLoading: isLoggingOut }, logoutRequest] = useAxios(
@@ -66,12 +84,13 @@ const Login = () => {
 
   return (
     <div className="login-main-container">
-      <div>Login</div>
       <form noValidate className="login-form-container">
         <div className="login-form-item">
           <label className="login-form-label">Email:</label>
           <input
+            className="login-form-input"
             // name="email"
+            type='email'
             value={formState.email}
             onChange={setFormState('email')}
             required
@@ -80,23 +99,24 @@ const Login = () => {
         <div className="login-form-item">
           <label className="login-form-label">Password:</label>
           <input
-            className="login-form-item"
+            className="login-form-input"
             // name="password"
+            type='password'
             value={formState.password}
             onChange={setFormState('password')}
             required
           />
         </div>
-        <div className='button-container'>
+        <div className="button-container">
           <button className="button" onClick={login}>
-            {isLoggingIn ? <Loading /> : 'Login'}
+            Login
           </button>
           <button className="button" onClick={register}>
-            {isRegistering ? <Loading /> : 'Register'}
+            Register
           </button>
           {isAuthenticated && (
             <button className="button" onClick={logout}>
-              {isLoggingOut ? <Loading /> : 'Logout'}
+              Logout
             </button>
           )}
         </div>
@@ -109,9 +129,20 @@ const Login = () => {
               : formState.error}
           </p>
         )}
+      {(isLoggingIn || isRegistering || isLoggingOut) && (
+        <div className="loading-container">
+          <Loading />
+        </div>
+      )}
       </form>
     </div>
   )
 }
 
+// const mapDispatchToProps = {
+//   updateUser,
+//   logoutUser
+// }
+
+// export default connect(null, mapDispatchToProps)(Login)
 export default Login
