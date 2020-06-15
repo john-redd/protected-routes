@@ -58,6 +58,8 @@
 }
 
 .button {
+  /* height: fit-content; */
+  /* max-width: 8px; */
   padding: 8px 16px;
 
   font-size: 1rem;
@@ -66,4 +68,12 @@
 
 .login-error-message {
   margin-top: 32px;
+}
+
+.loading-container {
+  height: 100px;
+  width: 100px;
+  
+  position: absolute;
+  bottom: 32px;
 }

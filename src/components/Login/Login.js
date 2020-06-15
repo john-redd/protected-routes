@@ -73,6 +73,7 @@ const Login = () => {
           <input
             className="login-form-input"
             // name="email"
+            type='email'
             value={formState.email}
             onChange={setFormState('email')}
             required
@@ -83,6 +84,7 @@ const Login = () => {
           <input
             className="login-form-input"
             // name="password"
+            type='password'
             value={formState.password}
             onChange={setFormState('password')}
             required
@@ -90,14 +92,14 @@ const Login = () => {
         </div>
         <div className="button-container">
           <button className="button" onClick={login}>
-            {isLoggingIn ? <Loading /> : 'Login'}
+            Login
           </button>
           <button className="button" onClick={register}>
-            {isRegistering ? <Loading /> : 'Register'}
+            Register
           </button>
           {isAuthenticated && (
             <button className="button" onClick={logout}>
-              {isLoggingOut ? <Loading /> : 'Logout'}
+              Logout
             </button>
           )}
         </div>
@@ -110,6 +112,11 @@ const Login = () => {
               : formState.error}
           </p>
         )}
+      {(isLoggingIn || isRegistering || isLoggingOut) && (
+        <div className="loading-container">
+          <Loading />
+        </div>
+      )}
       </form>
     </div>
   )
