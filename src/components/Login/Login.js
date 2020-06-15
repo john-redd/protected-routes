@@ -71,6 +71,7 @@ const Login = () => {
         <div className="login-form-item">
           <label className="login-form-label">Email:</label>
           <input
+            className="login-form-input"
             // name="email"
             value={formState.email}
             onChange={setFormState('email')}
@@ -80,14 +81,14 @@ const Login = () => {
         <div className="login-form-item">
           <label className="login-form-label">Password:</label>
           <input
-            className="login-form-item"
+            className="login-form-input"
             // name="password"
             value={formState.password}
             onChange={setFormState('password')}
             required
           />
         </div>
-        <div className='button-container'>
+        <div className="button-container">
           <button className="button" onClick={login}>
             {isLoggingIn ? <Loading /> : 'Login'}
           </button>
