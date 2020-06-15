@@ -13,10 +13,10 @@ const Nav = () => {
   }
   return (
     <nav className='nav-container'>
-      <Link to="/not-protected" className='nav-link'>Unprotected Component</Link>
-      <Link to="/protected" className='nav-link'>Protected Component</Link>
+      <Link to={addPreviousRoute('/not-protected')} className='nav-link'>Unprotected Component</Link>
+      <Link to={addPreviousRoute('/protected')} className='nav-link'>Protected Component</Link>
       <Link to={addPreviousRoute('/admin')} className='nav-link'>Admin Component</Link>
-      <Link to="/super-admin" className='nav-link'>Super Admin Component</Link>
+      <Link to={addPreviousRoute('/super-admin')} className='nav-link'>Super Admin Component</Link>
     </nav>
   )
 }
