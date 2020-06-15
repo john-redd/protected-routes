@@ -12,10 +12,10 @@
 }
 
 .nav-container a {
-  color: white;
   text-decoration: none;
 }
 
 .nav-link {
   padding: 16px;
+  color: #912623
 }

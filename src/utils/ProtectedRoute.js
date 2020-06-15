@@ -4,16 +4,15 @@ import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 
 const ProtectedRoute = ({ exact = false, path, component, roles }) => {
-  const isAuthenticated = useSelector(
-    (reduxState) => reduxState.userReducer.isAuthenticated
-  )
-  const roleId = useSelector(
-    (reduxState) => reduxState.userReducer.user.role_id
-  )
+  const {
+    isAuthenticated,
+    user: { role_id: roleId }
+  } = useSelector((reduxState) => reduxState.userReducer)
+
   const location = useLocation()
 
   const checkRole = (roles) => {
-    if(roles){
+    if (roles) {
       return roles?.includes(roleId)
     }
 
@@ -27,7 +26,7 @@ const ProtectedRoute = ({ exact = false, path, component, roles }) => {
       ) : (
         <Redirect
           to={{
-            pathname: '/',
+            pathname: location?.state?.from ? location?.state?.from : '/' ,
             state: { from: location.pathname }
           }}
         />
